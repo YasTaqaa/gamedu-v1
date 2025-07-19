@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Game Susun Kata - Fruits</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="full-bg fruits">
+  <div class="container-soal">
+    <h1>🍎 Game Susun Kata - Fruits</h1>
+    <div id="game">
+      <div id="question-container"></div>
+      <div id="letter-buttons"></div>
+      <div id="answer-box"></div>
+      <p id="result"></p>
+      <p id="answer-status">Jawaban Tersimpan</p>
+      <div class="button-container">
+        <button id="save-btn" onclick="saveAnswer()">Simpan Jawaban</button>
+        <button id="next-btn" style="display:none;" onclick="nextQuestion()">Next</button>
+        <button id="score-btn" style="display:none;" onclick="showScore()">Lihat Skor</button>
+      </div>
+    </div>
+    <a href="index.html" class="back-link">⬅️ Kembali ke Beranda</a>
+  </div>
+  <script>
+    sessionStorage.setItem('kategori', 'fruits');
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

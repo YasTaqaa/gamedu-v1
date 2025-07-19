@@ -1,0 +1,348 @@
+/* === RESET & BODY === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #eef;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === BACKGROUND UMUM === */
+body.full-bg {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+body.dashboard {
+  background: url('images/bgutama.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+body.full-bg.animals {
+  background-image: url('images/bghewan.jpg');
+}
+body.full-bg.fruits {
+  background-image: url('images/bgbuah.png');
+}
+body.full-bg.vegetables {
+  background-image: url('images/bgsayur.jpg');
+}
+body.full-bg.days {
+  background-image: url('images/bghari.png');
+}
+body.full-bg.greetings {
+  background-image: url('images/bggreetings.jpg');
+}
+body.full-bg.score {
+  background-image: url('images/bgutama.jpg');
+}
+
+
+/* === OVERLAY === */
+body.dashboard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 0;
+}
+
+/* === CONTAINER UTAMA === */
+.dashboard-container,
+.container,
+.container-soal,
+.container-score {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 40px 16px;
+  width: 85%;
+  max-width: 700px;
+  min-height: 90vh;
+  margin: 40px auto; 
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* === HEADER === */
+.dashboard-container h1,
+.container-buah h1,
+.container-hewan h1,
+.container-score h1 {
+  font-size: 26px;
+  color: #2d9c58;
+  margin-bottom: 16px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-container p,
+#score-display {
+  font-size: 17px;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+/* === BUTTON UMUM === */
+.button-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 16px;
+}
+
+.back-link {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+
+  font-size: 16px;
+  color: #2d9c58;
+  text-decoration: none;
+  font-weight: bold;
+
+  opacity: 0;
+  animation: fadeInLink 0.8s ease forwards;
+
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.back-link:hover {
+  color: #0d6130;
+  transform: translateX(3px);
+}
+
+/* Animasi muncul dari kiri */
+@keyframes fadeInLink {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+button,
+.category-btn,
+#save-btn,
+#next-btn,
+#score-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #2d9c58;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:hover,
+.category-btn:hover,
+#save-btn:hover,
+#next-btn:hover,
+#score-btn:hover {
+  background-color: #4be88e;
+  transform: scale(1.05);
+}
+
+/* === GAME === */
+#game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+#question-container {
+  font-size: 20px;
+  font-weight: bold;
+  color: #444;
+}
+
+#letter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0;
+  max-width: 100%;
+}
+
+.letter-btn {
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+  background-color: #ffd966;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+  animation: popIn 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+}
+
+
+.letter-btn:hover {
+  background-color: #f8c14d;
+  transform: scale(1.05);
+}
+
+#answer-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  margin-bottom: 8px;
+}
+
+.letter-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  background-color: #73c5e5;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* === GAMBAR UMUM === */
+img {
+  max-width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  margin: 8px auto;
+}
+
+/* === STATUS TEXT === */
+#result {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 8px 0;
+  transition: 0.3s;
+}
+
+#answer-status {
+  margin-top: 8px;
+  color: #2d9c58;
+  display: none;
+  transition: 0.3s;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 480px) {
+  body {
+    flex-direction: column;
+  }
+
+  .dashboard-container,
+  .container,
+  .container-buah,
+  .container-hewan,
+  .container-score {
+    padding: 20px 14px;
+    width: 92%;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .dashboard-container h1,
+  .container-score h1,
+  .container-buah h1,
+  .container-hewan h1 {
+    font-size: 22px;
+  }
+
+  .dashboard-container p,
+  #score-display {
+    font-size: 15px;
+  }
+
+  .letter-box {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .letter-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
+
+  button,
+  .category-btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  img {
+    max-height: 150px;
+  }
+}
+
+/* === ANIMASI === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

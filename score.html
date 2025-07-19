@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skor Anda</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="full-bg score">
+  <div class="container-score">
+    <h1>🏆 Skor Permainan Anda</h1>
+    <p id="score-display">Memuat skor...</p>
+    <div class="button-container">
+      <button onclick="location.href='index.html'">Kembali ke Beranda</button>
+    </div>
+  </div>
+
+  <script>
+    const score = sessionStorage.getItem('score') || 0;
+    const total = sessionStorage.getItem('totalQuestions') || 0;
+    const display = document.getElementById('score-display');
+
+    if (total == 0) {
+      display.textContent = "Belum ada skor yang dihitung.";
+    } else {
+      const percent = (score / total * 100).toFixed(1);
+      display.textContent = `Skor Anda: ${score} dari ${total} (${percent}%)`;
+    }
+  </script>
+</body>
+</html>
