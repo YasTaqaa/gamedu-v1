@@ -27,11 +27,11 @@ const soalKategori = {
     { gambar: 'tomato.jpg', jawaban: 'TOMATO', nama: 'Tomat' }
   ],
   greetings: [
-    { gambar: 'good_morning.jpg', jawaban: 'GOOD MORNING', nama: 'Selamat pagi' },
-    { gambar: 'hello.jpg', jawaban: 'HELLO', nama: 'Halo' },
-    { gambar: 'goodbye.jpg', jawaban: 'GOODBYE', nama: 'Selamat tinggal' },
-    { gambar: 'thank_you.jpg', jawaban: 'THANK YOU', nama: 'Terima kasih' },
-    { gambar: 'how_are_you.jpg', jawaban: 'HOW ARE YOU', nama: 'Apa kabar' }
+    { gambar: 'good_morning.png', jawaban: 'GOOD MORNING', nama: 'Selamat pagi' },
+    { gambar: 'hello.png', jawaban: 'HELLO', nama: 'Halo' },
+    { gambar: 'goodbye.png', jawaban: 'GOODBYE', nama: 'Selamat tinggal' },
+    { gambar: 'thank_you.png', jawaban: 'THANK YOU', nama: 'Terima kasih' },
+    { gambar: 'how_are_you.png', jawaban: 'HOW ARE YOU', nama: 'Apa kabar' }
   ],
   days: [
     { gambar: 'monday.jpg', jawaban: 'MONDAY', nama: 'Senin' },
