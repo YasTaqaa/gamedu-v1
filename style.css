@@ -275,8 +275,8 @@ button:active {
   flex-wrap: wrap;
   justify-content: center;
   gap: 3px;
-  margin: 6px 0;
-  padding: 6px;
+  margin: 2px 0;
+  padding: 2px;
   background: rgba(255, 255, 255, 0.4);
   border-radius: 12px;
   border: 2px dashed #ff9ff3;
@@ -314,13 +314,14 @@ button:active {
   flex-wrap: wrap;
   justify-content: center;
   gap: 3px;
-  margin: 6px 0;
-  padding: 4px;
+  margin: 2px 0;
+  padding: 2px;
   background: linear-gradient(145deg, rgba(78, 205, 196, 0.1), rgba(69, 183, 209, 0.1));
   border-radius: 12px;
   border: 2px dashed #4ecdc4;
   position: relative;
   align-items: center;
+  min-height: 38px;
 }
 
 #answer-box::before {
@@ -387,8 +388,8 @@ img:hover {
 #result {
   font-size: 12px;
   font-weight: bold;
-  margin: 6px 0;
-  padding: 6px 8px;
+  margin: 4px 0;
+  padding: 4px 6px;
   border-radius: 8px;
   transition: all 0.3s ease;
   min-height: 15px;
@@ -396,7 +397,7 @@ img:hover {
 }
 
 #answer-status {
-  margin: 6px 0;
+  margin: 4px 0;
   color: #27ae60;
   font-weight: bold;
   font-size: 11px;
@@ -598,4 +599,49 @@ button:focus,
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+.container-soal {
+  font-size: 20px;
+}
+
+.container-soal .button-container button,
+.container-soal button,
+.container-soal #save-btn,
+.container-soal #next-btn,
+.container-soal #score-btn {
+  font-size: 15px;
+  padding: 15px 0;
+  min-width: 90px;
+  max-width: 180px;
+}
+
+.container-soal .letter-btn,
+.container-soal .letter-box {
+  font-size: 18px;
+  width: 45px;
+  height: 45px;
+}
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  gap: 10px;
+}
+
+.nav-row .back-link,
+.nav-row button {
+  font-size: 16px;
+  padding: 14px 0;
+  width: 200px;         
+  text-align: center;
+  border-radius: 15px;
+  box-sizing: border-box;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
 }

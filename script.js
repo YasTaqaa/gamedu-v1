@@ -6,41 +6,56 @@ let letterSlots = [];
 
 const soalKategori = {
   fruits: [
-    { gambar: 'apple.jpg', jawaban: 'APPLE', nama: 'Apel' },
-    { gambar: 'banana.jpg', jawaban: 'BANANA', nama: 'Pisang' },
-    { gambar: 'grape.jpg', jawaban: 'GRAPE', nama: 'Anggur' },
-    { gambar: 'melon.jpg', jawaban: 'MELON', nama: 'Melon' },
-    { gambar: 'orange.jpg', jawaban: 'ORANGE', nama: 'Jeruk' }
+    { gambar: 'images/fruits/apple.jpg', jawaban: 'APPLE', nama: 'Apel' },
+    { gambar: 'images/fruits/banana.jpg', jawaban: 'BANANA', nama: 'Pisang' },
+    { gambar: 'images/fruits/grape.jpg', jawaban: 'GRAPE', nama: 'Anggur' },
+    { gambar: 'images/fruits/melon.jpg', jawaban: 'MELON', nama: 'Melon' },
+    { gambar: 'images/fruits/orange.jpg', jawaban: 'ORANGE', nama: 'Jeruk' },
+    { gambar: 'images/fruits/coconut.jpg', jawaban: 'COCONUT', nama: 'Kelapa' },
+    { gambar: 'images/fruits/pineapple.jpg', jawaban: 'PINEAPPLE', nama: 'Nanas' },
+    { gambar: 'images/fruits/watermelon.jpg', jawaban: 'WATERMELON', nama: 'Semangka' },
+    { gambar: 'images/fruits/guava.jpg', jawaban: 'GUAVA', nama: 'Jambu Biji' },
+    { gambar: 'images/fruits/mango.jpg', jawaban: 'MANGO', nama: 'Mangga' }
   ],
   animals: [
-    { gambar: 'cat.jpg', jawaban: 'CAT', nama: 'Kucing' },
-    { gambar: 'dog.jpg', jawaban: 'DOG', nama: 'Anjing' },
-    { gambar: 'fish.jpg', jawaban: 'FISH', nama: 'Ikan' },
-    { gambar: 'bird.jpg', jawaban: 'BIRD', nama: 'Burung' },
-    { gambar: 'lion.jpg', jawaban: 'LION', nama: 'Singa' }
+    { gambar: 'images/animals/cat.jpg', jawaban: 'CAT', nama: 'Kucing' },
+    { gambar: 'images/animals/dog.jpg', jawaban: 'DOG', nama: 'Anjing' },
+    { gambar: 'images/animals/fish.jpg', jawaban: 'FISH', nama: 'Ikan' },
+    { gambar: 'images/animals/bird.jpg', jawaban: 'BIRD', nama: 'Burung' },
+    { gambar: 'images/animals/lion.jpg', jawaban: 'LION', nama: 'Singa' },
+    { gambar: 'images/animals/tiger.jpg', jawaban: 'TIGER', nama: 'Harimau' },
+    { gambar: 'images/animals/chicken.jpg', jawaban: 'CHICKEN', nama: 'Ayam' },
+    { gambar: 'images/animals/duck.jpg', jawaban: 'DUCK', nama: 'Bebek' },
+    { gambar: 'images/animals/elephant.jpg', jawaban: 'ELEPHANT', nama: 'Gajah' },
+    { gambar: 'images/animals/rabbit.jpg', jawaban: 'RABBIT', nama: 'Kelinci' }
   ],
   vegetables: [
-    { gambar: 'carrot.jpg', jawaban: 'CARROT', nama: 'Wortel' },
-    { gambar: 'corn.jpg', jawaban: 'CORN', nama: 'Jagung' },
-    { gambar: 'cabbage.jpg', jawaban: 'CABBAGE', nama: 'Kubis' },
-    { gambar: 'onion.jpg', jawaban: 'ONION', nama: 'Bawang' },
-    { gambar: 'tomato.jpg', jawaban: 'TOMATO', nama: 'Tomat' }
+    { gambar: 'images/vegetables/carrot.jpg', jawaban: 'CARROT', nama: 'Wortel' },
+    { gambar: 'images/vegetables/corn.jpg', jawaban: 'CORN', nama: 'Jagung' },
+    { gambar: 'images/vegetables/cabbage.jpg', jawaban: 'CABBAGE', nama: 'Kubis' },
+    { gambar: 'images/vegetables/onion.jpg', jawaban: 'ONION', nama: 'Bawang' },
+    { gambar: 'images/vegetables/tomato.jpg', jawaban: 'TOMATO', nama: 'Tomat' },
+    { gambar: 'images/vegetables/broccoli.jpg', jawaban: 'BROCCOLI', nama: 'Brokoli' },
+    { gambar: 'images/vegetables/potato.jpg', jawaban: 'POTATO', nama: 'Kentang' },
+    { gambar: 'images/vegetables/cucumber.jpg', jawaban: 'CUCUMBER', nama: 'Timun' },
+    { gambar: 'images/vegetables/mushroom.jpg', jawaban: 'MUSHROOM', nama: 'Jamur' },
+    { gambar: 'images/vegetables/spinach.jpg', jawaban: 'SPINACH', nama: 'Bayam' }
   ],
   greetings: [
-    { gambar: 'good_morning.png', jawaban: 'GOOD MORNING', nama: 'Selamat pagi' },
-    { gambar: 'hello.png', jawaban: 'HELLO', nama: 'Halo' },
-    { gambar: 'goodbye.png', jawaban: 'GOODBYE', nama: 'Selamat tinggal' },
-    { gambar: 'thank_you.png', jawaban: 'THANK YOU', nama: 'Terima kasih' },
-    { gambar: 'how_are_you.png', jawaban: 'HOW ARE YOU', nama: 'Apa kabar' }
+    { gambar: 'images/greetings/good_morning.png', jawaban: 'GOOD MORNING', nama: 'Selamat pagi' },
+    { gambar: 'images/greetings/good_afternoon.png', jawaban: 'GOOD AFTERNOON', nama: 'Selamat siang' },
+    { gambar: 'images/greetings/good_evening.png', jawaban: 'GOOD EVENING', nama: 'Selamat sore' },
+    { gambar: 'images/greetings/hello.png', jawaban: 'HELLO', nama: 'Halo' },
+    { gambar: 'images/greetings/how_are_you.png', jawaban: 'HOW ARE YOU', nama: 'Apa kabar' }
   ],
   days: [
-    { gambar: 'monday.jpg', jawaban: 'MONDAY', nama: 'Senin' },
-    { gambar: 'tuesday.jpg', jawaban: 'TUESDAY', nama: 'Selasa' },
-    { gambar: 'wednesday.jpg', jawaban: 'WEDNESDAY', nama: 'Rabu' },
-    { gambar: 'thursday.jpg', jawaban: 'THURSDAY', nama: 'Kamis' },
-    { gambar: 'friday.jpg', jawaban: 'FRIDAY', nama: 'Jumat' },
-    { gambar: 'saturday.jpg', jawaban: 'SATURDAY', nama: 'Sabtu' },
-    { gambar: 'sunday.jpg', jawaban: 'SUNDAY', nama: 'Minggu' },
+    { gambar: 'images/days/monday.jpg', jawaban: 'MONDAY', nama: 'Senin' },
+    { gambar: 'images/days/tuesday.jpg', jawaban: 'TUESDAY', nama: 'Selasa' },
+    { gambar: 'images/days/wednesday.jpg', jawaban: 'WEDNESDAY', nama: 'Rabu' },
+    { gambar: 'images/days/thursday.jpg', jawaban: 'THURSDAY', nama: 'Kamis' },
+    { gambar: 'images/days/friday.jpg', jawaban: 'FRIDAY', nama: 'Jumat' },
+    { gambar: 'images/days/saturday.jpg', jawaban: 'SATURDAY', nama: 'Sabtu' },
+    { gambar: 'images/days/sunday.jpg', jawaban: 'SUNDAY', nama: 'Minggu' }
   ]
 };
 
@@ -64,8 +79,8 @@ function initGame() {
 function loadQuestion() {
   const q = questions[currentQuestion];
   document.getElementById('question-container').innerHTML = `
-    <img src="images/${q.gambar}" alt="${q.nama}" />
-    <p><strong>${q.nama}</strong></p>
+  <img src="${q.gambar}" alt="${q.nama}" />
+  <p><strong>${q.nama}</strong></p>
   `;
 
   selectedLetters = new Array(q.jawaban.replace(/ /g, '').length).fill('');
