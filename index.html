@@ -11,12 +11,36 @@
     <h1 class="big-welcome">🎮 Selamat Datang di Game Edukasi</h1>
     <p class="big-subtitle">Pilih kategori permainan:</p>
     <div class="button-container">
-      <button onclick="location.href='animals.html'">🐶 Nama Hewan</button>
-      <button onclick="location.href='fruits.html'">🍎 Nama Buah</button>
-      <button onclick="location.href='vegetables.html'">🥕 Nama Sayur</button>
-      <button onclick="location.href='greetings.html'">👋 Kalimat Sapaan</button>
-      <button onclick="location.href='days.html'">📅 Nama Hari</button>
+      <button class="start-btn" data-href="animals.html">🐶 Nama Hewan</button>
+      <button class="start-btn" data-href="fruits.html">🍎 Nama Buah</button>
+      <button class="start-btn" data-href="vegetables.html">🥕 Nama Sayur</button>
+      <button class="start-btn" data-href="greetings.html">👋 Kalimat Sapaan</button>
+      <button class="start-btn" data-href="days.html">📅 Nama Hari</button>
     </div>
   </div>
+  
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const startButtons = document.querySelectorAll('.start-btn');
+        startButtons.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            const href = btn.getAttribute('data-href');
+            if (href) {
+              if (typeof playSfx !== 'undefined' && typeof sfxStart !== 'undefined') {
+                playSfx(sfxStart);
+                setTimeout(function() {
+                  window.location.href = href;
+                }, 150);
+              } else {
+                window.location.href = href;
+              }
+            }
+          });
+        });
+      }, 300);
+    });
+  </script>
 </body>
 </html>

@@ -10,22 +10,51 @@
   <div class="container-score">
     <h1 class="big-score">🏆 Skor Permainan Anda</h1>
     <p id="score-display">Memuat skor...</p>
-    <div class="button-container">
-      <button onclick="location.href='index.html'">Kembali ke Beranda</button>
+    <p id="score-message"></p>
+    <div class="score-bar">
+      <div class="score-fill"></div>
+    </div>
+
+    <div class="button-container fix-button">
+      <a class="score-btn back-link" href="index.html" data-href="index.html">Kembali ke Beranda</a>
+      <a class="score-btn restart-btn" id="restart-btn" href="#">Ulangi Permainan</a>
     </div>
   </div>
 
+  <script src="script.js"></script>
   <script>
-    const score = sessionStorage.getItem('score') || 0;
-    const total = sessionStorage.getItem('totalQuestions') || 0;
-    const display = document.getElementById('score-display');
+    initializeSFX();
 
-    if (total == 0) {
-      display.textContent = "Belum ada skor yang dihitung.";
-    } else {
-      const percent = (score / total * 100).toFixed(1);
-      display.textContent = `Skor Anda: ${score} dari ${total} (${percent}%)`;
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+      const kategori = sessionStorage.getItem('kategori') || 'fruits';
+
+      const backBtn = document.querySelector('.back-link');
+      if (backBtn) {
+        backBtn.addEventListener('click', function () {
+          if (typeof playSfx !== 'undefined' && typeof sfxBack !== 'undefined') {
+            playSfx(sfxBack);
+            setTimeout(() => window.location.href = 'index.html', 150);
+          } else {
+            window.location.href = 'index.html';
+          }
+        });
+      }
+
+      const restartBtn = document.getElementById('restart-btn');
+      if (restartBtn) {
+        restartBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          const kategori = sessionStorage.getItem('kategori') || 'fruits';
+          const url = `${kategori}.html`;
+          if (typeof playSfx === 'function' && sfxRestart) {
+            playSfx(sfxRestart);
+            setTimeout(() => window.location.href = url, 150);
+          } else {
+            window.location.href = url;
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>

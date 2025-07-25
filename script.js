@@ -59,9 +59,50 @@ const soalKategori = {
   ]
 };
 
+// --- SFX SETUP dengan Error Handling ---
+let sfxClick, sfxUndo, sfxNext, sfxCorrect, sfxWrong, sfxStart, sfxBack, sfxRestart;
+
+function initializeSFX() {
+  try {
+    sfxClick = new Audio('sounds/sfx/click.wav');
+    sfxUndo = new Audio('sounds/sfx/undo.wav');
+    sfxNext = new Audio('sounds/sfx/next.wav');
+    sfxCorrect = new Audio('sounds/sfx/correct_answer.wav');
+    sfxWrong = new Audio('sounds/sfx/wrong_answer.wav');
+    sfxStart = new Audio('sounds/sfx/start.wav');
+    sfxBack = new Audio('sounds/sfx/back.wav');
+    sfxRestart = new Audio('sounds/sfx/restart.wav');
+    sfxScore = new Audio('sounds/sfx/score.wav');
+
+    const audioFiles = [sfxClick, sfxUndo, sfxNext, sfxCorrect, sfxWrong, sfxStart, sfxBack, sfxRestart, sfxScore];
+    audioFiles.forEach(audio => {
+      if (audio) {
+        audio.volume = 0.7;
+        audio.preload = 'auto';
+        audio.addEventListener('error', e => console.warn('Audio tidak dimuat:', e.target.src));
+      }
+    });
+  } catch (e) {
+    console.warn('Error audio init:', e);
+  }
+}
+
+function playSfx(audio) {
+  if (!audio) return;
+  try {
+    audio.currentTime = 0;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) playPromise.catch(err => console.warn('Audio error:', err));
+  } catch (e) {
+    console.warn('Audio play failed:', e);
+  }
+}
+
 function getGameTypeFromTitle() {
-  const kat = sessionStorage.getItem('kategori');
-  return kat || 'fruits';
+  const urlParams = new URLSearchParams(window.location.search);
+  const kategori = urlParams.get('kategori') || sessionStorage.getItem('kategori') || 'fruits';
+  sessionStorage.setItem('kategori', kategori);
+  return kategori;
 }
 
 function shuffleArray(arr) {
@@ -69,8 +110,7 @@ function shuffleArray(arr) {
 }
 
 function initGame() {
-  const gameType = getGameTypeFromTitle();
-  questions = shuffleArray(soalKategori[gameType] || []);
+  questions = shuffleArray(soalKategori[getGameTypeFromTitle()] || []);
   currentQuestion = 0;
   score = 0;
   loadQuestion();
@@ -78,10 +118,7 @@ function initGame() {
 
 function loadQuestion() {
   const q = questions[currentQuestion];
-  document.getElementById('question-container').innerHTML = `
-  <img src="${q.gambar}" alt="${q.nama}" />
-  <p><strong>${q.nama}</strong></p>
-  `;
+  document.getElementById('question-container').innerHTML = `<img src="${q.gambar}" alt="${q.nama}" /><p><strong>${q.nama}</strong></p>`;
 
   selectedLetters = new Array(q.jawaban.replace(/ /g, '').length).fill('');
   createAnswerSlots(q.jawaban);
@@ -101,10 +138,29 @@ function createAnswerSlots(answer) {
   for (let i = 0; i < answer.length; i++) {
     const slot = document.createElement('div');
     slot.className = 'letter-box';
-    if (answer[i] === ' ') {
-      slot.classList.add('space');
-    } else {
+    if (answer[i] === ' ') slot.classList.add('space');
+    else {
       slot.dataset.index = letterSlots.length;
+      slot.addEventListener('click', () => {
+        const idx = Number(slot.dataset.index);
+        if (slot.textContent) {
+          playSfx(sfxUndo);
+          const btn = document.createElement('button');
+          btn.className = 'letter-btn';
+          btn.textContent = slot.textContent;
+          btn.onclick = () => {
+            const emptyIndex = selectedLetters.findIndex(l => l === '');
+            if (emptyIndex === -1) return;
+            selectedLetters[emptyIndex] = btn.textContent;
+            letterSlots[emptyIndex].textContent = btn.textContent;
+            playSfx(sfxClick);
+            btn.remove();
+          };
+          document.getElementById('letter-buttons').appendChild(btn);
+          selectedLetters[idx] = '';
+          slot.textContent = '';
+        }
+      });
       letterSlots.push(slot);
     }
     container.appendChild(slot);
@@ -119,13 +175,14 @@ function createLetterButtons(answer) {
     const btn = document.createElement('button');
     btn.className = 'letter-btn';
     btn.textContent = letter;
-    btn.addEventListener('click', function () {
+    btn.onclick = () => {
       const emptyIndex = selectedLetters.findIndex(l => l === '');
       if (emptyIndex === -1) return;
       selectedLetters[emptyIndex] = letter;
       letterSlots[emptyIndex].textContent = letter;
-      btn.remove(); // huruf dan kotaknya menghilang
-    });
+      playSfx(sfxClick);
+      btn.remove();
+    };
     container.appendChild(btn);
   });
 }
@@ -139,32 +196,81 @@ function saveAnswer() {
     score++;
     result.innerText = '✅ Jawaban Benar: ' + questions[currentQuestion].jawaban;
     result.style.color = 'green';
+    playSfx(sfxCorrect);
   } else {
     result.innerText = `❌ Salah! Jawaban: ${questions[currentQuestion].jawaban}`;
     result.style.color = 'red';
+    playSfx(sfxWrong);
   }
 
   document.getElementById('save-btn').style.display = 'none';
   document.getElementById('answer-status').style.display = 'block';
-
-  if (currentQuestion < questions.length - 1) {
+  if (currentQuestion < questions.length - 1)
     document.getElementById('next-btn').style.display = 'inline';
-  } else {
+  else
     document.getElementById('score-btn').style.display = 'inline';
-  }
 }
 
 function nextQuestion() {
   currentQuestion++;
   selectedLetters = [];
   letterSlots = [];
+  playSfx(sfxNext);
   loadQuestion();
 }
 
 function showScore() {
+  playSfx(sfxScore);
   sessionStorage.setItem('score', score);
   sessionStorage.setItem('totalQuestions', questions.length);
-  window.location.href = 'score.html';
+  setTimeout(() => {
+    window.location.href = 'score.html';
+  }, 150);
 }
 
-window.onload = initGame;
+
+function attachEventListeners() {
+  document.querySelectorAll('.start-btn, .button-container button').forEach(btn => {
+    btn.addEventListener('click', e => playSfx(sfxStart));
+  });
+
+  document.querySelectorAll('.back-link').forEach(link => {
+    link.addEventListener('click', e => {
+      playSfx(sfxBack);
+      setTimeout(() => (window.location.href = link.href), 100);
+      e.preventDefault();
+    });
+  });
+
+  ['save-btn', 'next-btn', 'score-btn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', () => playSfx(sfxClick));
+  });
+}
+
+window.onload = () => {
+  initializeSFX();
+  setTimeout(() => attachEventListeners(), 200);
+  if (document.getElementById('score-display')) {
+    const score = Number(sessionStorage.getItem('score')) || 0;
+    const total = Number(sessionStorage.getItem('totalQuestions')) || 0;
+    const display = document.getElementById('score-display');
+    const message = document.getElementById('score-message');
+    const scoreFill = document.querySelector('.score-fill');
+    const percent = ((score / total) * 100).toFixed(1);
+    scoreFill.style.width = `${percent}%`;
+    let current = 0;
+    const interval = setInterval(() => {
+      if (current < score) {
+        current++;
+        display.textContent = `Skor Anda: ${current} dari ${total} (${((current / total) * 100).toFixed(1)}%)`;
+      } else {
+        clearInterval(interval);
+        display.textContent = `Skor Anda: ${score} dari ${total} (${percent}%)`;
+      }
+    }, 40);
+    if (percent >= 80) message.textContent = '🎉 Hebat! Kamu sangat pintar!';
+    else if (percent >= 50) message.textContent = '👍 Bagus! Terus belajar!';
+    else message.textContent = '😊 Jangan menyerah, coba lagi!';
+  } else initGame();
+};
