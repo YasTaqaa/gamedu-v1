@@ -71,6 +71,12 @@ body.dashboard::before {
   flex-direction: column;
 }
 
+/* === CONTAINER SOAL KHUSUS === */
+.container-soal {
+  min-height: 95vh;
+  justify-content: space-between; /* Pisahkan game content dan navigation */
+}
+
 /* === DASHBOARD TITLE === */
 .big-welcome {
   font-size: 36px;
@@ -428,28 +434,61 @@ img:hover {
   color: #45b7d1;
 }
 
-/* === NAVIGATION ROW === */
+/* === NAVIGATION ROW - KONSISTEN DI BAWAH === */
 .nav-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 18px;
-  gap: 10px;
+  gap: 15px;
+  margin-top: auto; /* Selalu di bawah dengan flexbox */
+  padding: 15px 0 5px 0;
 }
 
 .nav-row .back-link,
 .nav-row button {
-  font-size: 16px;
-  padding: 14px 0;
-  width: 200px;         
+  font-size: 14px;
+  padding: 12px 20px;
+  min-width: 140px;
+  max-width: 200px;
   text-align: center;
-  border-radius: 15px;
+  border-radius: 20px;
   box-sizing: border-box;
   height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
+  flex: 1;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+/* STYLING KHUSUS TOMBOL BACK */
+.nav-row .back-link {
+  background: linear-gradient(145deg, #ff6b9d, #e55a8a);
+  color: white;
+  text-decoration: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-row .back-link:hover {
+  background: linear-gradient(145deg, #e55a8a, #d63384);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+}
+
+/* STYLING KHUSUS TOMBOL NEXT */
+.nav-row button {
+  background: linear-gradient(145deg, #4ecdc4, #45b7d1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-row button:hover {
+  background: linear-gradient(145deg, #45b7d1, #3498db);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
 }
 
 /* === TOMBOL KHUSUS UNTUK SCORE PAGE === */
@@ -537,7 +576,6 @@ img:hover {
   background: linear-gradient(145deg, #45b7d1, #3498db);
 }
 
-
 /* === RESPONSIVE DESIGN === */
 @media (max-width: 768px) {
   body {
@@ -550,6 +588,10 @@ img:hover {
     width: 98%;
     padding: 12px 15px;
     max-height: calc(100vh - 16px);
+  }
+
+  .container-soal {
+    padding-bottom: 15px; /* Sedikit ruang di bawah */
   }
 
   h1 {
@@ -599,8 +641,21 @@ img:hover {
     font-size: 14px;
     padding: 12px;
   }
-}
 
+  /* RESPONSIVE NAVIGATION */
+  .nav-row {
+    padding: 12px 0 5px 0;
+    gap: 10px;
+  }
+
+  .nav-row .back-link,
+  .nav-row button {
+    font-size: 12px;
+    padding: 10px 15px;
+    min-width: 100px;
+    height: 42px;
+  }
+}
 
 @media (max-width: 480px) {
   body {
@@ -613,6 +668,10 @@ img:hover {
     width: 99%;
     padding: 10px 12px;
     max-height: calc(100vh - 10px);
+  }
+
+  .container-soal {
+    padding-bottom: 12px;
   }
 
   h1 {
@@ -669,6 +728,21 @@ img:hover {
     gap: 8px;
   }
 
+  /* RESPONSIVE NAVIGATION MOBILE */
+  .nav-row {
+    padding: 10px 0 5px 0;
+    gap: 8px;
+  }
+
+  .nav-row .back-link,
+  .nav-row button {
+    font-size: 11px;
+    padding: 8px 12px;
+    min-width: 85px;
+    height: 38px;
+    letter-spacing: 0.3px;
+  }
+
   /* RESPONSIVE UNTUK SCORE BUTTONS */
   .container-score .button-container {
     gap: 12px;
@@ -710,6 +784,15 @@ img:hover {
 
   img {
     max-height: 70px;
+  }
+
+  /* RESPONSIVE NAVIGATION SANGAT KECIL */
+  .nav-row .back-link,
+  .nav-row button {
+    font-size: 10px;
+    padding: 6px 8px;
+    min-width: 75px;
+    height: 35px;
   }
 
   /* RESPONSIVE UNTUK SCORE BUTTONS */
@@ -792,3 +875,4 @@ button:focus,
   flex-direction: column;
   padding: 10px;
 }
+

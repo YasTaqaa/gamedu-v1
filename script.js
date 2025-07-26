@@ -59,8 +59,86 @@ const soalKategori = {
   ]
 };
 
-// --- SFX SETUP dengan Error Handling ---
-let sfxClick, sfxUndo, sfxNext, sfxCorrect, sfxWrong, sfxStart, sfxBack, sfxRestart;
+// --- ENHANCED AUDIO MANAGEMENT ---
+let sfxClick, sfxUndo, sfxNext, sfxCorrect, sfxWrong, sfxStart, sfxBack, sfxRestart, sfxScore;
+let audioInitialized = false;
+
+// Audio Manager Global untuk semua halaman
+function initializeGlobalAudio() {
+  const bgm = document.getElementById('bgm');
+  if (!bgm) return;
+
+  bgm.volume = 0.3;
+  bgm.loop = true;
+
+  // Strategi bertingkat untuk autoplay
+  const attemptPlay = () => {
+    const playPromise = bgm.play();
+    
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log('BGM berhasil diputar otomatis');
+          audioInitialized = true;
+        })
+        .catch(error => {
+          console.log('Autoplay diblokir, menunggu interaksi user');
+          setupInteractionHandlers(bgm);
+        });
+    }
+  };
+
+  // Handler untuk memulai audio setelah interaksi
+  function setupInteractionHandlers(audio) {
+    const startAudio = () => {
+      audio.play()
+        .then(() => {
+          console.log('BGM dimulai setelah interaksi user');
+          audioInitialized = true;
+        })
+        .catch(err => console.warn('Error memulai audio:', err));
+      
+      // Hapus event listener setelah berhasil
+      cleanup();
+    };
+
+    const cleanup = () => {
+      document.removeEventListener('click', startAudio);
+      document.removeEventListener('touchstart', startAudio);
+      document.removeEventListener('keydown', startAudio);
+      document.removeEventListener('mousemove', startAudio);
+      window.removeEventListener('scroll', startAudio);
+    };
+
+    // Multiple event listeners untuk berbagai interaksi
+    document.addEventListener('click', startAudio, { once: true, passive: true });
+    document.addEventListener('touchstart', startAudio, { once: true, passive: true });
+    document.addEventListener('keydown', startAudio, { once: true, passive: true });
+    document.addEventListener('mousemove', startAudio, { once: true, passive: true });
+    window.addEventListener('scroll', startAudio, { once: true, passive: true });
+  }
+
+  // Coba putar langsung
+  attemptPlay();
+
+  // Resume audio jika tab menjadi aktif kembali
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && bgm.paused && audioInitialized) {
+      bgm.play().catch(() => {});
+    }
+  });
+
+  // Coba putar ulang setiap 2 detik jika masih paused (maksimal 5 kali)
+  let retryCount = 0;
+  const retryInterval = setInterval(() => {
+    if (bgm.paused && retryCount < 5) {
+      bgm.play().catch(() => {});
+      retryCount++;
+    } else {
+      clearInterval(retryInterval);
+    }
+  }, 2000);
+}
 
 function initializeSFX() {
   try {
@@ -74,8 +152,7 @@ function initializeSFX() {
     sfxRestart = new Audio('sounds/sfx/restart.wav');
     sfxScore = new Audio('sounds/sfx/score.wav');
 
-    const audioFiles = [sfxClick, sfxUndo, sfxNext, sfxCorrect, sfxWrong, sfxStart, sfxBack, sfxRestart, sfxScore];
-    audioFiles.forEach(audio => {
+    [sfxClick, sfxUndo, sfxNext, sfxCorrect, sfxWrong, sfxStart, sfxBack, sfxRestart, sfxScore].forEach(audio => {
       if (audio) {
         audio.volume = 0.7;
         audio.preload = 'auto';
@@ -90,9 +167,15 @@ function initializeSFX() {
 function playSfx(audio) {
   if (!audio) return;
   try {
-    audio.currentTime = 0;
-    const playPromise = audio.play();
-    if (playPromise !== undefined) playPromise.catch(err => console.warn('Audio error:', err));
+    // Pastikan BGM tetap berjalan saat memutar SFX
+    const bgm = document.getElementById('bgm');
+    if (bgm && bgm.paused && audioInitialized) {
+      bgm.play().catch(() => {});
+    }
+    
+    const clone = audio.cloneNode();
+    clone.volume = audio.volume;
+    clone.play().catch(err => console.warn('Audio error:', err));
   } catch (e) {
     console.warn('Audio play failed:', e);
   }
@@ -110,7 +193,8 @@ function shuffleArray(arr) {
 }
 
 function initGame() {
-  questions = shuffleArray(soalKategori[getGameTypeFromTitle()] || []);
+  const semuaSoal = shuffleArray(soalKategori[getGameTypeFromTitle()] || []);
+  questions = semuaSoal.slice(0, 5);
   currentQuestion = 0;
   score = 0;
   loadQuestion();
@@ -138,8 +222,9 @@ function createAnswerSlots(answer) {
   for (let i = 0; i < answer.length; i++) {
     const slot = document.createElement('div');
     slot.className = 'letter-box';
-    if (answer[i] === ' ') slot.classList.add('space');
-    else {
+    if (answer[i] === ' ') {
+      slot.classList.add('space');
+    } else {
       slot.dataset.index = letterSlots.length;
       slot.addEventListener('click', () => {
         const idx = Number(slot.dataset.index);
@@ -225,9 +310,8 @@ function showScore() {
   sessionStorage.setItem('totalQuestions', questions.length);
   setTimeout(() => {
     window.location.href = 'score.html';
-  }, 150);
+  }, 600);
 }
-
 
 function attachEventListeners() {
   document.querySelectorAll('.start-btn, .button-container button').forEach(btn => {
@@ -236,9 +320,9 @@ function attachEventListeners() {
 
   document.querySelectorAll('.back-link').forEach(link => {
     link.addEventListener('click', e => {
-      playSfx(sfxBack);
-      setTimeout(() => (window.location.href = link.href), 100);
       e.preventDefault();
+      playSfx(sfxBack);
+      setTimeout(() => (window.location.href = link.href), 600);
     });
   });
 
@@ -248,9 +332,18 @@ function attachEventListeners() {
   });
 }
 
+// Inisialisasi Universal
 window.onload = () => {
+  // Inisialisasi audio global untuk semua halaman
+  initializeGlobalAudio();
+  
+  // Inisialisasi SFX
   initializeSFX();
+  
+  // Setup event listeners
   setTimeout(() => attachEventListeners(), 200);
+
+  // Jika di halaman score
   if (document.getElementById('score-display')) {
     const score = Number(sessionStorage.getItem('score')) || 0;
     const total = Number(sessionStorage.getItem('totalQuestions')) || 0;
@@ -269,8 +362,12 @@ window.onload = () => {
         display.textContent = `Skor Anda: ${score} dari ${total} (${percent}%)`;
       }
     }, 40);
+
     if (percent >= 80) message.textContent = '🎉 Hebat! Kamu sangat pintar!';
     else if (percent >= 50) message.textContent = '👍 Bagus! Terus belajar!';
     else message.textContent = '😊 Jangan menyerah, coba lagi!';
-  } else initGame();
+  } else {
+    // Jika di halaman game, inisialisasi game
+    initGame();
+  }
 };

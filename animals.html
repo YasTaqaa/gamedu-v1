@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="full-bg animals">
+  <audio id="bgm" preload="auto">
+    <source src="sounds/bgm/bgm_question.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="container-soal">
     <h1>🐾 Game Susun Kata - Animals</h1>
     <div id="game">
@@ -25,6 +29,7 @@
       <button id="next-btn" style="display:none;" onclick="nextQuestion()">Next</button>
     </div>
   </div>
+  
   <script>
     sessionStorage.setItem('kategori', 'animals');
   </script>

@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="full-bg days">
+  <audio id="bgm" preload="auto">
+    <source src="sounds/bgm/bgm_question.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="container-soal">
     <h1>📅 Game Susun Kata - Days</h1>
     <div id="game">
@@ -19,10 +23,13 @@
         <button id="save-btn" onclick="saveAnswer()">Simpan Jawaban</button>
         <button id="score-btn" style="display:none;" onclick="showScore()">Lihat Skor</button>
       </div>
+    </div>
     <div class="nav-row">
       <a href="index.html" class="back-link">⬅️ Kembali ke Beranda</a>
       <button id="next-btn" style="display:none;" onclick="nextQuestion()">Next</button>
     </div>
+  </div>
+  
   <script>
     sessionStorage.setItem('kategori', 'days');
   </script>

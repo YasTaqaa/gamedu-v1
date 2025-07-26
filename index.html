@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Game Edukasi</title>
+  <title>Game Edukasi: Susun Kata Bahasa Inggris Anak</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="dashboard">
+  <audio id="bgm" preload="auto">
+    <source src="sounds/bgm/bgm_category.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="dashboard-container">
-    <h1 class="big-welcome">🎮 Selamat Datang di Game Edukasi</h1>
+    <h1 class="big-welcome">🎮 Game Edukasi: Susun Kata Bahasa Inggris Anak</h1>
     <p class="big-subtitle">Pilih kategori permainan:</p>
     <div class="button-container">
       <button class="start-btn" data-href="animals.html">🐶 Nama Hewan</button>
@@ -18,9 +22,66 @@
       <button class="start-btn" data-href="days.html">📅 Nama Hari</button>
     </div>
   </div>
-  
+
   <script src="script.js"></script>
   <script>
+    // === AUDIO MANAGER YANG DITINGKATKAN ===
+    function initializeAudio() {
+      const bgm = document.getElementById('bgm');
+      if (!bgm) return;
+
+      bgm.volume = 0.3;
+      bgm.loop = true;
+
+      // Strategi bertingkat untuk memulai audio
+      const playAudio = () => {
+        const playPromise = bgm.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log('BGM berhasil diputar');
+            })
+            .catch(error => {
+              console.log('Menunggu interaksi user untuk memutar audio');
+            });
+        }
+      };
+
+      // Coba putar langsung
+      playAudio();
+
+      // Backup: Putar saat ada interaksi
+      const startOnInteraction = () => {
+        bgm.play().catch(() => {});
+        document.removeEventListener('click', startOnInteraction);
+        document.removeEventListener('touchstart', startOnInteraction);
+        document.removeEventListener('keydown', startOnInteraction);
+        document.removeEventListener('mousemove', startOnInteraction);
+      };
+
+      // Multiple event listeners untuk berbagai interaksi
+      document.addEventListener('click', startOnInteraction, { once: true, passive: true });
+      document.addEventListener('touchstart', startOnInteraction, { once: true, passive: true });
+      document.addEventListener('keydown', startOnInteraction, { once: true, passive: true });
+      document.addEventListener('mousemove', startOnInteraction, { once: true, passive: true });
+
+      // Resume audio jika tab aktif kembali
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && bgm.paused) {
+          bgm.play().catch(() => {});
+        }
+      });
+    }
+
+    // Jalankan audio manager
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeAudio);
+    } else {
+      initializeAudio();
+    }
+
+    // Setup button functionality
     document.addEventListener('DOMContentLoaded', function() {
       setTimeout(function() {
         const startButtons = document.querySelectorAll('.start-btn');
@@ -28,6 +89,12 @@
           btn.addEventListener('click', function() {
             const href = btn.getAttribute('data-href');
             if (href) {
+              // Pastikan audio dimulai saat klik tombol
+              const bgm = document.getElementById('bgm');
+              if (bgm && bgm.paused) {
+                bgm.play().catch(() => {});
+              }
+              
               if (typeof playSfx !== 'undefined' && typeof sfxStart !== 'undefined') {
                 playSfx(sfxStart);
                 setTimeout(function() {
