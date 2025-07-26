@@ -7,106 +7,93 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="dashboard">
+  <!-- BGM -->
   <audio id="bgm" preload="auto">
     <source src="sounds/bgm/bgm_category.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Halaman Awal -->
   <div class="dashboard-container">
     <h1 class="big-welcome">🎮 Game Edukasi: Susun Kata Bahasa Inggris Anak</h1>
-    <p class="big-subtitle">Pilih kategori permainan:</p>
-    <div class="button-container">
-      <button class="start-btn" data-href="animals.html">🐶 Nama Hewan</button>
-      <button class="start-btn" data-href="fruits.html">🍎 Nama Buah</button>
-      <button class="start-btn" data-href="vegetables.html">🥕 Nama Sayur</button>
-      <button class="start-btn" data-href="greetings.html">👋 Kalimat Sapaan</button>
-      <button class="start-btn" data-href="days.html">📅 Nama Hari</button>
+    <p class="big-subtitle" id="subtitle1">🌟 Belajar bahasa Inggris dengan cara yang menyenangkan!</p>
+    <p class="big-subtitle" id="subtitle2">🎯 Susun huruf menjadi kata yang benar</p>
+
+    <!-- Tombol Mulai -->
+    <div id="start-screen">
+      <button class="start-game-button">▶️ Mulai Permainan</button>
+      <p class="big-subtitle" id="subtitle3">🧩✨🎉</p>
+    </div>
+
+    <!-- Pilih Kategori -->
+    <div id="category-selection" style="display: none;">
+      <p class="big-subtitle">Pilih kategori permainan:</p>
+      <div class="button-container">
+        <button class="start-btn" data-href="animals.html">🐶 Nama Hewan</button>
+        <button class="start-btn" data-href="fruits.html">🍎 Nama Buah</button>
+        <button class="start-btn" data-href="vegetables.html">🥕 Nama Sayur</button>
+        <button class="start-btn" data-href="greetings.html">👋 Kalimat Sapaan</button>
+        <button class="start-btn" data-href="days.html">📅 Nama Hari</button>
+      </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
   <script>
-    // === AUDIO MANAGER YANG DITINGKATKAN ===
     function initializeAudio() {
       const bgm = document.getElementById('bgm');
       if (!bgm) return;
-
       bgm.volume = 0.3;
       bgm.loop = true;
 
-      // Strategi bertingkat untuk memulai audio
       const playAudio = () => {
         const playPromise = bgm.play();
-        
         if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log('BGM berhasil diputar');
-            })
-            .catch(error => {
-              console.log('Menunggu interaksi user untuk memutar audio');
-            });
+          playPromise.catch(() => {});
         }
       };
 
-      // Coba putar langsung
       playAudio();
 
-      // Backup: Putar saat ada interaksi
       const startOnInteraction = () => {
         bgm.play().catch(() => {});
         document.removeEventListener('click', startOnInteraction);
-        document.removeEventListener('touchstart', startOnInteraction);
-        document.removeEventListener('keydown', startOnInteraction);
-        document.removeEventListener('mousemove', startOnInteraction);
       };
 
-      // Multiple event listeners untuk berbagai interaksi
       document.addEventListener('click', startOnInteraction, { once: true, passive: true });
-      document.addEventListener('touchstart', startOnInteraction, { once: true, passive: true });
-      document.addEventListener('keydown', startOnInteraction, { once: true, passive: true });
-      document.addEventListener('mousemove', startOnInteraction, { once: true, passive: true });
-
-      // Resume audio jika tab aktif kembali
-      document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && bgm.paused) {
-          bgm.play().catch(() => {});
-        }
-      });
     }
 
-    // Jalankan audio manager
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initializeAudio);
     } else {
       initializeAudio();
     }
 
-    // Setup button functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        const startButtons = document.querySelectorAll('.start-btn');
-        startButtons.forEach(function(btn) {
-          btn.addEventListener('click', function() {
-            const href = btn.getAttribute('data-href');
-            if (href) {
-              // Pastikan audio dimulai saat klik tombol
-              const bgm = document.getElementById('bgm');
-              if (bgm && bgm.paused) {
-                bgm.play().catch(() => {});
-              }
-              
-              if (typeof playSfx !== 'undefined' && typeof sfxStart !== 'undefined') {
-                playSfx(sfxStart);
-                setTimeout(function() {
-                  window.location.href = href;
-                }, 150);
-              } else {
-                window.location.href = href;
-              }
-            }
-          });
+    document.addEventListener('DOMContentLoaded', function () {
+      const startBtn = document.querySelector('.start-game-button');
+      const startScreen = document.getElementById('start-screen');
+      const categorySection = document.getElementById('category-selection');
+
+      const subtitle1 = document.getElementById('subtitle1');
+      const subtitle2 = document.getElementById('subtitle2');
+      const subtitle3 = document.getElementById('subtitle3');
+
+      startBtn.addEventListener('click', () => {
+        startScreen.style.display = 'none';
+        categorySection.style.display = 'block';
+
+        subtitle1.style.display = 'none';
+        subtitle2.style.display = 'none';
+        subtitle3.style.display = 'none';
+      });
+
+      const kategoriButtons = document.querySelectorAll('.start-btn');
+      kategoriButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const href = button.getAttribute('data-href');
+          if (href) {
+            window.location.href = href;
+          }
         });
-      }, 300);
+      });
     });
   </script>
 </body>

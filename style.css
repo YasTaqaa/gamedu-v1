@@ -876,3 +876,28 @@ button:focus,
   padding: 10px;
 }
 
+.start-game-button {
+  padding: 15px 30px;
+  font-size: 22px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 30px auto;
+  display: block;
+  transition: 0.3s;
+}
+
+.start-game-button:hover {
+  background-color: #45a049;
+}
+
+#subtitle3 {
+  font-size: 65px;
+  text-align: center;
+  margin-top: 80px;
+}
+
+
+
